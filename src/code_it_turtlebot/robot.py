@@ -2,13 +2,14 @@ from display import Display
 from nav import Navigation
 import actionlib
 import blinky.msg
+from move_base_msgs.msg import MoveBaseAction
 import tf
 
 
 class Robot(object):
     def __init__(self, display, navigation):
-        self._display = display
-        self._navigation = navigation
+        self.display = display
+        self.navigation = navigation
 
 
 def build_real():

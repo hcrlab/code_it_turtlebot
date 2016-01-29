@@ -12,7 +12,7 @@ class Display(object):
         """
         self._blinky_client = blinky_client
 
-    def show_default():
+    def show_default(self):
         self._blinky_client.wait_for_server()
         goal = blinky.msg.FaceGoal()
         goal.display_type = 'default'
@@ -20,7 +20,7 @@ class Display(object):
         self._blinky_client.wait_for_result()
     
     
-    def show_message(h1_text, h2_text):
+    def show_message(self, h1_text, h2_text):
         self._blinky_client.wait_for_server()
         goal = blinky.msg.FaceGoal()
         goal.display_type = 'displayMessage'

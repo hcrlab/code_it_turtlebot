@@ -29,6 +29,7 @@ class Navigation(object):
         goal.target_pose = pose_stamped
         self._move_base_client.send_goal(goal)
         self._move_base_client.wait_for_result()
+        return self._move_base_client.get_result()
 
     def get_current_location(self):
         """Returns the location of the robot in the world frame.

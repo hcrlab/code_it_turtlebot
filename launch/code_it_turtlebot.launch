@@ -1,0 +1,4 @@
+<launch>
+  <node pkg="location_server" type="location_server_node.py" name="location_server" />
+  <node pkg="code_it_turtlebot" type="turtlebot.py" name="code_it_turtlebot" />
+</launch>

@@ -8,6 +8,7 @@ find_package(catkin REQUIRED COMPONENTS
   actionlib
   blinky
   code_it
+  location_server
   rospy
 )
 
