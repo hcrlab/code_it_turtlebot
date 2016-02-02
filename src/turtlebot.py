@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from code_it.srv import AskMultipleChoice, AskMultipleChoiceResponse
 from code_it.srv import DisplayMessage, DisplayMessageResponse
 from code_it.srv import GoTo, GoToResponse
 from code_it.srv import GoToDock, GoToDockResponse
@@ -21,6 +22,12 @@ class RobotApi(object):
         self._robot.display.show_message(request.h1_text, request.h2_text)
         return DisplayMessageResponse()
 
+    def on_ask_multiple_choice(self, request):
+        result = self._robot.display.ask_multiple_choice(request.question,
+                                                         request.choices)
+        choice = result.choice if result is None else None
+        return AskMultipleChoiceResponse(choice=result.choice)
+
     def on_go_to(self, request):
         pose_stamped = self._location_db.get_by_name(request.location)
         if pose_stamped is None:
@@ -33,8 +40,7 @@ class RobotApi(object):
     def on_go_to_dock(self, request):
         pose_stamped = self._location_db.get_by_name('PreDockingPose')
         if pose_stamped is None:
-            msg = 'PreDockingPose location not set.'.format(
-                request.location)
+            msg = 'PreDockingPose location not set.'.format(request.location)
             return GoToDockResponse(error=msg)
         result = self._robot.navigation.go_to(pose_stamped)
         result = self._robot.navigation.dock()
@@ -51,10 +57,10 @@ def main():
     api = RobotApi(robot, db)
     rospy.Service('code_it/api/display_message', DisplayMessage,
                   api.on_display_message)
-    rospy.Service('code_it/api/go_to', GoTo,
-                  api.on_go_to)
-    rospy.Service('code_it/api/go_to_dock', GoToDock,
-                  api.on_go_to_dock)
+    rospy.Service('code_it/api/ask_multiple_choice', AskMultipleChoice,
+                  api.on_ask_multiple_choice)
+    rospy.Service('code_it/api/go_to', GoTo, api.on_go_to)
+    rospy.Service('code_it/api/go_to_dock', GoToDock, api.on_go_to_dock)
     rospy.Subscriber("code_it/stopped", Empty, api.on_program_end)
 
 
