@@ -25,8 +25,8 @@ class RobotApi(object):
     def on_ask_multiple_choice(self, request):
         result = self._robot.display.ask_multiple_choice(request.question,
                                                          request.choices)
-        choice = result.choice if result is None else None
-        return AskMultipleChoiceResponse(choice=result.choice)
+        choice = result.choice if result is not None else None
+        return AskMultipleChoiceResponse(choice=choice)
 
     def on_go_to(self, request):
         pose_stamped = self._location_db.get_by_name(request.location)
