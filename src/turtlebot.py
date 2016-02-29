@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-from code_it.srv import AskMultipleChoice, AskMultipleChoiceResponse
-from code_it.srv import DisplayMessage, DisplayMessageResponse
-from code_it.srv import GoTo, GoToResponse
-from code_it.srv import GoToDock, GoToDockResponse
+from code_it_msgs.srv import AskMultipleChoice, AskMultipleChoiceResponse
+from code_it_msgs.srv import DisplayMessage, DisplayMessageResponse
+from code_it_msgs.srv import GoTo, GoToResponse
+from code_it_msgs.srv import GoToDock, GoToDockResponse
 from std_msgs.msg import Bool
 import code_it_turtlebot as turtlebot
 import location_db
