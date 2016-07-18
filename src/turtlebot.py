@@ -62,16 +62,18 @@ class RobotApi(object):
 
     ## simple move commands:
     def on_move_forward(self, req):
-        curPose = robot.get_current_location()
-        command = Twist();
-        command.linear.x = 0.25;
-        move_pub.publish(command);
+        startTime = rospy.get_time()
+        endTime = startTime + 1; # run for 1 second
+        while(rospy.get_time < endTime)
+            command = Twist();
+            command.linear.x = 0.25;
+            move_pub.publish(command);
 
 
 def main():
     robot = turtlebot.robot.build_real()
     db = location_db.build_real()
-    move_pub = rospy.Publisher('/base_controller/command', Twist)
+    move_pub = rospy.Publisher('/base_controller/command', Twist, queue_size=3)
 
     api = RobotApi(robot, db, move_pub)
     rospy.Service('code_it/api/display_message', DisplayMessage,
