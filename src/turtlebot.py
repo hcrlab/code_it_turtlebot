@@ -1,12 +1,14 @@
-#!/usr/bin/env python
+#! /usr/bin/env python
 
 from code_it_msgs.srv import AskMultipleChoice, AskMultipleChoiceResponse
 from code_it_msgs.srv import DisplayMessage, DisplayMessageResponse
 from code_it_msgs.srv import GoTo, GoToResponse
+from code_it_msgs.srv import Say, SayResponse
 from code_it_msgs.srv import GoToDock, GoToDockResponse
 from std_msgs.msg import Bool
 import code_it_turtlebot as turtlebot
 import location_db
+from sound_play.libsoundplay import SoundClient
 import rospy
 
 
@@ -17,6 +19,7 @@ class RobotApi(object):
     def __init__(self, robot, location_db):
         self._robot = robot
         self._location_db = location_db
+	self.soundClient = SoundClient()
 
     def on_display_message(self, request):
         self._robot.display.show_message(request.h1_text, request.h2_text)
@@ -51,6 +54,10 @@ class RobotApi(object):
             self._robot.navigation.cancel()
             self._robot.display.show_default()
 
+    def on_say(self, req):
+	self.soundClient.say(req.text, 'voice_kal_diphone');
+	return SayResponse()
+
 
 def main():
     robot = turtlebot.robot.build_real()
@@ -63,7 +70,7 @@ def main():
     rospy.Service('code_it/api/go_to', GoTo, api.on_go_to)
     rospy.Service('code_it/api/go_to_dock', GoToDock, api.on_go_to_dock)
     rospy.Subscriber("code_it/is_program_running", Bool, api.on_is_program_running)
-
+    rospy.Service('code_it/api/say', Say, api.on_say);
 
 if __name__ == '__main__':
     rospy.init_node('code_it_turtlebot')
