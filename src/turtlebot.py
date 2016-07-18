@@ -5,6 +5,7 @@ from code_it_msgs.srv import DisplayMessage, DisplayMessageResponse
 from code_it_msgs.srv import GoTo, GoToResponse
 from code_it_msgs.srv import Say, SayResponse
 from code_it_msgs.srv import GoToDock, GoToDockResponse
+from geometry_msgs.msg import Twist
 from std_msgs.msg import Bool
 import code_it_turtlebot as turtlebot
 import location_db
@@ -16,10 +17,11 @@ class RobotApi(object):
     """Implements the CodeIt! API, mainly through delegating to the robot object.
     """
 
-    def __init__(self, robot, location_db):
+    def __init__(self, robot, location_db, move_pub):
         self._robot = robot
         self._location_db = location_db
-	self.soundClient = SoundClient()
+        self.soundClient = SoundClient()
+        self.move_pub = move_pub
 
     def on_display_message(self, request):
         self._robot.display.show_message(request.h1_text, request.h2_text)
@@ -55,14 +57,23 @@ class RobotApi(object):
             self._robot.display.show_default()
 
     def on_say(self, req):
-	self.soundClient.say(req.text, 'voice_kal_diphone');
-	return SayResponse()
+       self.soundClient.say(req.text, 'voice_kal_diphone');
+       return SayResponse()
+
+    ## simple move commands:
+    def on_move_forward(self, req):
+        curPose = robot.get_current_location()
+        command = Twist();
+        command.linear.x = 0.25;
+        move_pub.publish(command);
 
 
 def main():
     robot = turtlebot.robot.build_real()
     db = location_db.build_real()
-    api = RobotApi(robot, db)
+    move_pub = rospy.Publisher('/base_controller/command', Twist)
+
+    api = RobotApi(robot, db, move_pub)
     rospy.Service('code_it/api/display_message', DisplayMessage,
                   api.on_display_message)
     rospy.Service('code_it/api/ask_multiple_choice', AskMultipleChoice,
@@ -71,6 +82,11 @@ def main():
     rospy.Service('code_it/api/go_to_dock', GoToDock, api.on_go_to_dock)
     rospy.Subscriber("code_it/is_program_running", Bool, api.on_is_program_running)
     rospy.Service('code_it/api/say', Say, api.on_say);
+    rospy.Service('code_it/api/move_forward', MoveForward, api.on_move_forward)
+    # rospy.Service('code_it/api/move_forward')
+    # rospy.Service('code_it/api/move_forward')
+    # rospy.Service('code_it/api/move_forward')
+
 
 if __name__ == '__main__':
     rospy.init_node('code_it_turtlebot')
