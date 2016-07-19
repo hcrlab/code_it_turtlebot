@@ -5,6 +5,7 @@ from code_it_msgs.srv import DisplayMessage, DisplayMessageResponse
 from code_it_msgs.srv import GoTo, GoToResponse
 from code_it_msgs.srv import Say, SayResponse
 from code_it_msgs.srv import GoToDock, GoToDockResponse
+from code_it_msgs.srv import MoveForward
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Bool
 import code_it_turtlebot as turtlebot
@@ -61,19 +62,19 @@ class RobotApi(object):
        return SayResponse()
 
     ## simple move commands:
-    def on_move_forward(self, req):
-        startTime = rospy.get_time()
-        endTime = startTime + 1; # run for 1 second
-        while(rospy.get_time < endTime)
-            command = Twist();
-            command.linear.x = 0.25;
-            move_pub.publish(command);
+def on_move_forward():
+    startTime = rospy.get_time()
+    endTime = startTime + 1
+    while(rospy.get_time() < endTime):
+        command = Twist()
+        command.linear.x = 0.25
+        move_pub.publish(command)
 
 
 def main():
     robot = turtlebot.robot.build_real()
     db = location_db.build_real()
-    move_pub = rospy.Publisher('/base_controller/command', Twist, queue_size=3)
+    move_pub = rospy.Publisher('/cmd_vel_mux/input/navi', Twist, queue_size=10)
 
     api = RobotApi(robot, db, move_pub)
     rospy.Service('code_it/api/display_message', DisplayMessage,
