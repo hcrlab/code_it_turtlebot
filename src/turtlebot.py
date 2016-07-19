@@ -62,13 +62,13 @@ class RobotApi(object):
        return SayResponse()
 
     ## simple move commands:
-def on_move_forward():
-    startTime = rospy.get_time()
-    endTime = startTime + 1
-    while(rospy.get_time() < endTime):
-        command = Twist()
-        command.linear.x = 0.25
-        move_pub.publish(command)
+    def on_move_forward():
+        startTime = rospy.get_time()
+        endTime = startTime + 1
+        while(rospy.get_time() < endTime):
+            command = Twist()
+            command.linear.x = 0.25
+            move_pub.publish(command)
 
 
 def main():
