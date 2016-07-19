@@ -5,7 +5,7 @@ from code_it_msgs.srv import DisplayMessage, DisplayMessageResponse
 from code_it_msgs.srv import GoTo, GoToResponse
 from code_it_msgs.srv import Say, SayResponse
 from code_it_msgs.srv import GoToDock, GoToDockResponse
-from code_it_msgs.srv import MoveForward
+from code_it_msgs.srv import MoveForward, MoveForwardResponse
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Bool
 import code_it_turtlebot as turtlebot
