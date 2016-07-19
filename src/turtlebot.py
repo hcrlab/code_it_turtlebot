@@ -71,6 +71,36 @@ class RobotApi(object):
             self.move_pub.publish(command)
         return MoveForwardResponse()
 
+    def on_turn_left(self, req):
+        startTime = rospy.get_time()
+        endTime = startTime + 1
+        print "turning left in turtlebot.py"
+        while(rospy.get_time() < endTime):
+            command = Twist()
+            command.angular.z = 0.3
+            self.move_pub.publish(command)
+        return TurnLeftResponse()
+
+    def on_turn_right(self, req):
+        startTime = rospy.get_time()
+        endTime = startTime + 1
+        print "turning right in turtlebot.py"
+        while(rospy.get_time() < endTime):
+            command = Twist()
+            command.angular.z = 0.3
+            self.move_pub.publish(command)
+        return TurnLeftResponse()
+
+    def on_move_back(self, req):
+        startTime = rospy.get_time()
+        endTime = startTime + 1
+        print "moving back in turtlebot.py"
+        while(rospy.get_time() < endTime):
+            command = Twist()
+            command.angular.z = -0.25
+            self.move_pub.publish(command)
+        return TurnLeftResponse()
+
 
 def main():
     robot = turtlebot.robot.build_real()
@@ -86,7 +116,11 @@ def main():
     rospy.Service('code_it/api/go_to_dock', GoToDock, api.on_go_to_dock)
     rospy.Subscriber("code_it/is_program_running", Bool, api.on_is_program_running)
     rospy.Service('code_it/api/say', Say, api.on_say);
+
     rospy.Service('code_it/api/move_forward', MoveForward, api.on_move_forward)
+    rospy.Service('code_it/api/turn_left', Turn, api.on_turn_left)
+    rospy.Service('code_it/api/turn_right', Turn, api.on_turn_right)
+    rospy.Service('code_it/api/move_back', MoveBackward, api.on_move_back)
     # rospy.Service('code_it/api/move_forward')
     # rospy.Service('code_it/api/move_forward')
     # rospy.Service('code_it/api/move_forward')
