@@ -69,6 +69,7 @@ class RobotApi(object):
             command = Twist()
             command.linear.x = 0.25
             self.move_pub.publish(command)
+        return MoveForwardResponse()
 
 
 def main():
