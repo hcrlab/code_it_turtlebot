@@ -82,8 +82,8 @@ class RobotApi(object):
             command.linear.x = 0
             command.linear.y = 0
             command.linear.z = 0
-            command.angular.z = -1.6
-            move_pub.publish(command)
+            command.angular.z = 1.6
+            self.move_pub.publish(command)
         return TurnResponse()
 
     def on_turn_right(self, req):
@@ -96,7 +96,7 @@ class RobotApi(object):
             command.linear.y = 0
             command.linear.z = 0
             command.angular.z = -1.6
-        move_pub.publish(command)
+            self.move_pub.publish(command)
         return TurnResponse()
 
     def on_move_back(self, req):
