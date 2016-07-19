@@ -68,7 +68,7 @@ class RobotApi(object):
         while(rospy.get_time() < endTime):
             command = Twist()
             command.linear.x = 0.25
-            move_pub.publish(command)
+            self.move_pub.publish(command)
 
 
 def main():
