@@ -79,8 +79,11 @@ class RobotApi(object):
         print "turning left in turtlebot.py"
         while(rospy.get_time() < endTime):
             command = Twist()
-            command.angular.x = 0.3
-            self.move_pub.publish(command)
+            command.linear.x = 0
+            command.linear.y = 0
+            command.linear.z = 0
+            command.angular.z = -1.6
+            move_pub.publish(command)
         return TurnResponse()
 
     def on_turn_right(self, req):
@@ -89,8 +92,11 @@ class RobotApi(object):
         print "turning right in turtlebot.py"
         while(rospy.get_time() < endTime):
             command = Twist()
-            command.angular.y = 0.3
-            self.move_pub.publish(command)
+            command.linear.x = 0
+            command.linear.y = 0
+            command.linear.z = 0
+            command.angular.z = -1.6
+        move_pub.publish(command)
         return TurnResponse()
 
     def on_move_back(self, req):
