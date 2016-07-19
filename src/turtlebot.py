@@ -6,6 +6,8 @@ from code_it_msgs.srv import GoTo, GoToResponse
 from code_it_msgs.srv import Say, SayResponse
 from code_it_msgs.srv import GoToDock, GoToDockResponse
 from code_it_msgs.srv import MoveForward, MoveForwardResponse
+from code_it_msgs.srv import MoveBack, MoveBackResponse
+from code_it_msgs.srv import Turn, TurnResponse
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Bool
 import code_it_turtlebot as turtlebot
@@ -89,7 +91,7 @@ class RobotApi(object):
             command = Twist()
             command.angular.z = 0.3
             self.move_pub.publish(command)
-        return TurnLeftResponse()
+        return TurnResponse()
 
     def on_move_back(self, req):
         startTime = rospy.get_time()
@@ -99,7 +101,7 @@ class RobotApi(object):
             command = Twist()
             command.angular.z = -0.25
             self.move_pub.publish(command)
-        return TurnLeftResponse()
+        return MoveBackResponse()
 
 
 def main():
@@ -120,7 +122,7 @@ def main():
     rospy.Service('code_it/api/move_forward', MoveForward, api.on_move_forward)
     rospy.Service('code_it/api/turn_left', Turn, api.on_turn_left)
     rospy.Service('code_it/api/turn_right', Turn, api.on_turn_right)
-    rospy.Service('code_it/api/move_back', MoveBackward, api.on_move_back)
+    rospy.Service('code_it/api/move_back', MoveBack, api.on_move_back)
     # rospy.Service('code_it/api/move_forward')
     # rospy.Service('code_it/api/move_forward')
     # rospy.Service('code_it/api/move_forward')
