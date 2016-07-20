@@ -69,7 +69,7 @@ class RobotApi(object):
         endTime = startTime + 1
         while(rospy.get_time() < endTime):
             command = Twist()
-            command.linear.x = 0.25
+            command.linear.x = req.speed
             self.move_pub.publish(command)
         return MoveForwardResponse()
 
@@ -82,7 +82,7 @@ class RobotApi(object):
             command.linear.x = 0
             command.linear.y = 0
             command.linear.z = 0
-            command.angular.z = 1.6
+            command.angular.z = req.speed
             self.move_pub.publish(command)
         return TurnResponse()
 
@@ -95,7 +95,7 @@ class RobotApi(object):
             command.linear.x = 0
             command.linear.y = 0
             command.linear.z = 0
-            command.angular.z = -1.6
+            command.angular.z = req.speed
             self.move_pub.publish(command)
         return TurnResponse()
 
@@ -105,7 +105,7 @@ class RobotApi(object):
         print "moving back in turtlebot.py"
         while(rospy.get_time() < endTime):
             command = Twist()
-            command.linear.x = -0.25
+            command.linear.x = req.speed
             self.move_pub.publish(command)
         return MoveBackResponse()
 
